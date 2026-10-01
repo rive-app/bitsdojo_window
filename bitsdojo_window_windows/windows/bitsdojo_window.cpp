@@ -110,6 +110,13 @@ namespace bitsdojo_window {
             {
                 return 0;
             }
+            // lpszClass may be an ATOM rather than a string pointer (e.g. windows
+            // created by an IME during startup). Comparing it as a string reads
+            // from an invalid address and crashes.
+            if (IS_INTRESOURCE(createParams->lpcs->lpszClass))
+            {
+                return 0;
+            }
             if (wcscmp(createParams->lpcs->lpszClass, L"FLUTTER_RUNNER_WIN32_WINDOW") == 0)
             {
                 flutter_window = (HWND)wparam;
